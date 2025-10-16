@@ -4,13 +4,13 @@
 
 
 ## The Demo
-- 3 MCP servers
+- 3 MCP servers RabbitMQ: 
 - Interceptor: 
 
    client ----- cache node --- security node --- mcp 
-            |--- analytics 
+              |--- analytics 
 
 
 ## A list of TS MCP server
 1. https://github.com/brave/brave-search-mcp-server
-2. https://github.com/AkekaratP/flights-mcp-ts  https://duffel.com/flights 
+2. https://github.com/blazickjp/arxiv-mcp-server

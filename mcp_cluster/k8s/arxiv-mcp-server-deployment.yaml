@@ -1,0 +1,68 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: arxiv-mcp-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: arxiv-mcp-server
+  template:
+    metadata:
+      labels:
+        app: arxiv-mcp-server
+    spec:
+      containers:
+      - name: arxiv-mcp-server
+        image: mcp-amqp-transport:latest
+        imagePullPolicy: Never
+        command:
+        - mcp-server-amqp-adaptor
+        - --hostname
+        - $(AMQP_HOSTNAME)
+        - --port
+        - $(AMQP_PORT)
+        - --username
+        - $(AMQP_USERNAME)
+        - --password
+        - $(AMQP_PASSWORD)
+        - --useTLS
+        - --serverName
+        - $(SERVER_NAME)
+        - --exchangeName
+        - $(EXCHANGE_NAME)
+        - --command
+        - uvx
+        - --args
+        - arxiv-mcp-server
+        env:
+        - name: AMQP_HOSTNAME
+          valueFrom:
+            configMapKeyRef:
+              name: amqp-config
+              key: AMQP_HOSTNAME
+        - name: AMQP_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: amqp-config
+              key: AMQP_PORT
+        - name: AMQP_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: amqp-config
+              key: AMQP_USERNAME
+        - name: AMQP_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: amqp-secret
+              key: AMQP_PASSWORD
+        - name: SERVER_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: amqp-config
+              key: SERVER_NAME
+        - name: EXCHANGE_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: amqp-config
+              key: EXCHANGE_NAME

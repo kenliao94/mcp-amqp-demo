@@ -9,9 +9,10 @@ Kubernetes cluster running two instances of amq-mcp-server-rabbit.
 
 ## Setup
 
-1. **Build Docker image:**
+1. **Build Docker images:**
 ```bash
 docker build -t mcp-amqp:latest .
+docker build -f Dockerfile.amqp-transport -t mcp-amqp-transport:latest ../..
 ```
 
 2. **Start cluster (minikube):**
@@ -19,6 +20,7 @@ docker build -t mcp-amqp:latest .
 minikube start
 eval $(minikube docker-env)
 docker build -t mcp-amqp:latest .
+docker build -f Dockerfile.amqp-transport -t mcp-amqp-transport:latest ../..
 ```
 
 3. **Deploy:**
