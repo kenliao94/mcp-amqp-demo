@@ -1,0 +1,19 @@
+FROM node:20-slim
+
+WORKDIR /app
+
+COPY amazon_mq_github/mcp-amqp-transport/package*.json ./
+RUN npm install
+
+COPY amazon_mq_github/mcp-amqp-transport/ ./
+RUN npm run build && npm link
+
+WORKDIR /interceptor
+
+COPY interceptors/package*.json ./
+RUN npm install && npm link mcp-amqp-transport
+
+COPY interceptors/ ./
+RUN npm run build
+
+CMD ["node", "dist/monitor_cli.js"]

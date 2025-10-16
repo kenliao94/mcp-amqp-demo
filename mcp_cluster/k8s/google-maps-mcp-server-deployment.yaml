@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: arxiv-mcp-server
+  name: google-maps-mcp-server
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: arxiv-mcp-server
+      app: google-maps-mcp-server
   template:
     metadata:
       labels:
-        app: arxiv-mcp-server
+        app: google-maps-mcp-server
     spec:
       containers:
-      - name: arxiv-mcp-server
+      - name: google-maps-mcp-server
         image: mcp-amqp-transport:latest
         imagePullPolicy: Never
         command:
@@ -28,13 +28,13 @@ spec:
         - $(AMQP_PASSWORD)
         - --useTLS
         - --serverName
-        - ArxivMCP
+        - GoogleMapsMCP
         - --exchangeName
         - $(EXCHANGE_NAME)
         - --command
-        - uvx
+        - npx
         - --args
-        - arxiv-mcp-server
+        - "-y @gongrzhe/server-travelplanner-mcp"
         env:
         - name: AMQP_HOSTNAME
           valueFrom:

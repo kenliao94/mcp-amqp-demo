@@ -7,7 +7,6 @@ data:
   AMQP_PORT: "5671"
   AMQP_USERNAME: "admin"
   AMQP_USE_TLS: "true"
-  SERVER_NAME: "ArxivMCP"
   EXCHANGE_NAME: "rabbitmq-mcp-exchange"
 ---
 apiVersion: v1

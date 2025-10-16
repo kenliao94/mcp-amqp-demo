@@ -1,19 +1,19 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: arxiv-mcp-server
+  name: rabbitmq-mcp-server
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: arxiv-mcp-server
+      app: rabbitmq-mcp-server
   template:
     metadata:
       labels:
-        app: arxiv-mcp-server
+        app: rabbitmq-mcp-server
     spec:
       containers:
-      - name: arxiv-mcp-server
+      - name: rabbitmq-mcp-server
         image: mcp-amqp-transport:latest
         imagePullPolicy: Never
         command:
@@ -28,13 +28,13 @@ spec:
         - $(AMQP_PASSWORD)
         - --useTLS
         - --serverName
-        - ArxivMCP
+        - RabbitMQMCP
         - --exchangeName
         - $(EXCHANGE_NAME)
         - --command
         - uvx
         - --args
-        - arxiv-mcp-server
+        - "amq-mcp-server-rabbitmq@latest"
         env:
         - name: AMQP_HOSTNAME
           valueFrom:
