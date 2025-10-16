@@ -15,25 +15,20 @@ class MonitorMessageInterceptor extends InterceptorBase {
 
 const args = process.argv.slice(2);
 
-if (args.length < 3) {
-    console.error('Usage: monitor_cli <hostname> <inExchange> <outExchange> [port] [username] [password] [useTLS]');
+if (args.length < 2) {
+    console.error('Usage: monitor_cli <inExchange> <outExchange>');
     process.exit(1);
 }
 
-const [hostname, inExchange, outExchange, port, username, password, useTLS] = args;
+const [inExchange, outExchange] = args;
 
 const monitor = new MonitorMessageInterceptor({
-    hostname,
-    port: port ? parseInt(port) : undefined,
-    username,
-    password,
-    useTLS: useTLS === 'true',
     inExchange,
     outExchange
 });
 
 monitor.start().then(() => {
-    console.log(`Monitor started: ${hostname} (${inExchange} -> ${outExchange})`);
+    console.log(`Monitor started: ${inExchange} -> ${outExchange}`);
 }).catch(error => {
     console.error('Failed to start monitor:', error);
     process.exit(1);

@@ -18,42 +18,39 @@ spec:
         imagePullPolicy: Never
         command:
         - node
-        - dist/monitor_cli.js
-        - $(AMQP_HOSTNAME)
+        - dist/src/monitor_cli.js
         - $(IN_EXCHANGE)
         - $(OUT_EXCHANGE)
-        - $(AMQP_PORT)
-        - $(AMQP_USERNAME)
-        - $(AMQP_PASSWORD)
-        - "true"
         env:
         - name: AMQP_HOSTNAME
           valueFrom:
             configMapKeyRef:
-              name: amqp-config
+              name: monitor-interceptor-config
               key: AMQP_HOSTNAME
         - name: AMQP_PORT
           valueFrom:
             configMapKeyRef:
-              name: amqp-config
+              name: monitor-interceptor-config
               key: AMQP_PORT
         - name: AMQP_USERNAME
           valueFrom:
             configMapKeyRef:
-              name: amqp-config
+              name: monitor-interceptor-config
               key: AMQP_USERNAME
         - name: AMQP_PASSWORD
           valueFrom:
             secretKeyRef:
               name: amqp-secret
               key: AMQP_PASSWORD
+        - name: AMQP_USE_TLS
+          value: "true"
         - name: IN_EXCHANGE
           valueFrom:
             configMapKeyRef:
-              name: amqp-config
+              name: monitor-interceptor-config
               key: IN_EXCHANGE
         - name: OUT_EXCHANGE
           valueFrom:
             configMapKeyRef:
-              name: amqp-config
+              name: monitor-interceptor-config
               key: OUT_EXCHANGE
