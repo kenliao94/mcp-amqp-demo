@@ -8,12 +8,15 @@ RUN npm install
 COPY amazon_mq_github/mcp-amqp-transport/ ./
 RUN npm run build && npm link
 
+ENV PATH="/root/.local/bin:${PATH}"
+
+
 WORKDIR /interceptor
 
-COPY interceptors/package*.json ./
-RUN npm install && npm link mcp-amqp-transport
+COPY mcp_cluster_demo/interceptors_cluster/monitor/package*.json ./
+RUN npm install
 
-COPY interceptors/ ./
+COPY mcp_cluster_demo/interceptors_cluster/monitor/ ./
 RUN npm run build
 
-CMD ["node", "dist/monitor_cli.js"]
+CMD ["node", "dist/src/monitor_cli.js"]

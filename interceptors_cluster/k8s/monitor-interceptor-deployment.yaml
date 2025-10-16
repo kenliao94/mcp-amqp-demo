@@ -1,0 +1,59 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: monitor-interceptor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: monitor-interceptor
+  template:
+    metadata:
+      labels:
+        app: monitor-interceptor
+    spec:
+      containers:
+      - name: monitor-interceptor
+        image: monitor-interceptor:latest
+        imagePullPolicy: Never
+        command:
+        - node
+        - dist/monitor_cli.js
+        - $(AMQP_HOSTNAME)
+        - $(IN_EXCHANGE)
+        - $(OUT_EXCHANGE)
+        - $(AMQP_PORT)
+        - $(AMQP_USERNAME)
+        - $(AMQP_PASSWORD)
+        - "true"
+        env:
+        - name: AMQP_HOSTNAME
+          valueFrom:
+            configMapKeyRef:
+              name: amqp-config
+              key: AMQP_HOSTNAME
+        - name: AMQP_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: amqp-config
+              key: AMQP_PORT
+        - name: AMQP_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: amqp-config
+              key: AMQP_USERNAME
+        - name: AMQP_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: amqp-secret
+              key: AMQP_PASSWORD
+        - name: IN_EXCHANGE
+          valueFrom:
+            configMapKeyRef:
+              name: amqp-config
+              key: IN_EXCHANGE
+        - name: OUT_EXCHANGE
+          valueFrom:
+            configMapKeyRef:
+              name: amqp-config
+              key: OUT_EXCHANGE

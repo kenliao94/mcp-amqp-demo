@@ -7,7 +7,8 @@ data:
   AMQP_PORT: "5671"
   AMQP_USERNAME: "admin"
   AMQP_USE_TLS: "true"
-  EXCHANGE_NAME: "mcp-cluster-exchange"
+  IN_EXCHANGE: "client-cluster-exchange"
+  OUT_EXCHANGE: "mcp-cluster-exchange"
 ---
 apiVersion: v1
 kind: Secret
