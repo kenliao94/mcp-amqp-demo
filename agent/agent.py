@@ -21,7 +21,7 @@ stdio_mcp_client = MCPClient(
                   "--serverName",
                   "RabbitMQMCP",
                   "--exchangeName",
-                  "rabbitmq-mcp-exchange"]
+                  "client-cluster-exchange"]
         )
     )
 )
