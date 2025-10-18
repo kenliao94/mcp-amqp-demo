@@ -1,0 +1,11 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: safety-interceptor-config
+data:
+  AMQP_HOSTNAME: "b-9560b8e1-3d33-4d91-9488-a3dc4a61dfe7.mq.us-east-1.amazonaws.com"
+  AMQP_PORT: "5671"
+  AMQP_USERNAME: "admin"
+  AMQP_USE_TLS: "true"
+  IN_EXCHANGE: "safety-interceptor-exchange"
+  OUT_EXCHANGE: "mcp-cluster-exchange"

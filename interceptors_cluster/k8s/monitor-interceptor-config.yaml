@@ -8,7 +8,7 @@ data:
   AMQP_USERNAME: "admin"
   AMQP_USE_TLS: "true"
   IN_EXCHANGE: "client-cluster-exchange"
-  OUT_EXCHANGE: "mcp-cluster-exchange"
+  OUT_EXCHANGE: "safety-interceptor-exchange"
 ---
 apiVersion: v1
 kind: Secret

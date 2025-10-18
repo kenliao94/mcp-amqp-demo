@@ -1,0 +1,22 @@
+{
+  "name": "mcp-interceptor-safety",
+  "version": "1.0.0",
+  "main": "dist/safety_cli.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.19.1",
+    "amqplib": "^0.10.9",
+    "express": "^5.1.0",
+    "mcp-amqp-transport": "file:/app",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/amqplib": "^0.10.7",
+    "@types/express": "^5.0.3",
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.0.0",
+    "typescript": "^5.0.0"
+  }
+}

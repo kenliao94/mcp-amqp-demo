@@ -1,0 +1,56 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: safety-interceptor
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: safety-interceptor
+  template:
+    metadata:
+      labels:
+        app: safety-interceptor
+    spec:
+      containers:
+      - name: safety-interceptor
+        image: safety-interceptor:latest
+        imagePullPolicy: Never
+        command:
+        - node
+        - dist/src/safety_cli.js
+        - $(IN_EXCHANGE)
+        - $(OUT_EXCHANGE)
+        env:
+        - name: AMQP_HOSTNAME
+          valueFrom:
+            configMapKeyRef:
+              name: safety-interceptor-config
+              key: AMQP_HOSTNAME
+        - name: AMQP_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: safety-interceptor-config
+              key: AMQP_PORT
+        - name: AMQP_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: safety-interceptor-config
+              key: AMQP_USERNAME
+        - name: AMQP_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: amqp-secret
+              key: AMQP_PASSWORD
+        - name: AMQP_USE_TLS
+          value: "true"
+        - name: IN_EXCHANGE
+          valueFrom:
+            configMapKeyRef:
+              name: safety-interceptor-config
+              key: IN_EXCHANGE
+        - name: OUT_EXCHANGE
+          valueFrom:
+            configMapKeyRef:
+              name: safety-interceptor-config
+              key: OUT_EXCHANGE
