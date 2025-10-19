@@ -16,5 +16,7 @@
 2. https://github.com/blazickjp/arxiv-mcp-server
 
 TODO:
+# https://w.amazon.com/bin/view/Open_Source/Open_Sourcing/Uploading/PublishingToNPM/
+# Open source my k8s demo
 # Find more MCP to build a convincing demo
 # Integrate with Opensearch 
