@@ -12,5 +12,9 @@
 
 
 ## A list of TS MCP server
-1. https://github.com/brave/brave-search-mcp-server
+1. https://mcp.so/server/firecrawl-mcp-server/mendableai
 2. https://github.com/blazickjp/arxiv-mcp-server
+
+TODO:
+# Find more MCP to build a convincing demo
+# Integrate with Opensearch 
