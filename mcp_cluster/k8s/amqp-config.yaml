@@ -8,11 +8,3 @@ data:
   AMQP_USERNAME: "admin"
   AMQP_USE_TLS: "true"
   EXCHANGE_NAME: "mcp-cluster-exchange"
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: amqp-secret
-type: Opaque
-stringData:
-  AMQP_PASSWORD: "admintestrabbit"

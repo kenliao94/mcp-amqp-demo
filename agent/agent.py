@@ -19,7 +19,7 @@ stdio_mcp_client = MCPClient(
                   "admintestrabbit",
                   "--useTLS",
                   "--serverName",
-                  "RabbitMQMCP",
+                  "firecrawlMCP",
                   "--exchangeName",
                   "client-cluster-exchange"]
         )

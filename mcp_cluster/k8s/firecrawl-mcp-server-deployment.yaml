@@ -1,0 +1,66 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: firecrawl-mcp-server
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: firecrawl-mcp-server
+  template:
+    metadata:
+      labels:
+        app: firecrawl-mcp-server
+    spec:
+      containers:
+      - name: firecrawl-mcp-server
+        image: mcp-amqp-transport:latest
+        imagePullPolicy: Never
+        command:
+        - mcp-server-amqp-adaptor
+        - --serverName
+        - firecrawlMCP
+        - --exchangeName
+        - $(EXCHANGE_NAME)
+        - --command
+        - npx
+        - --args
+        - -y
+        - --args
+        - firecrawl-mcp
+        env:
+        - name: AMQP_HOSTNAME
+          valueFrom:
+            configMapKeyRef:
+              name: amqp-config
+              key: AMQP_HOSTNAME
+        - name: AMQP_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: amqp-config
+              key: AMQP_PORT
+        - name: AMQP_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: amqp-config
+              key: AMQP_USERNAME
+        - name: AMQP_USE_TLS
+          valueFrom:
+            configMapKeyRef:
+              name: amqp-config
+              key: AMQP_USE_TLS
+        - name: AMQP_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: amqp-secret
+              key: AMQP_PASSWORD
+        - name: EXCHANGE_NAME
+          valueFrom:
+            configMapKeyRef:
+              name: amqp-config
+              key: EXCHANGE_NAME
+        - name: FIRECRAWL_API_KEY
+          valueFrom:
+            secretKeyRef:
+              name: firecrawl-secret
+              key: FIRECRAWL_API_KEY
