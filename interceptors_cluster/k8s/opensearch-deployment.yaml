@@ -1,0 +1,43 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: opensearch
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: opensearch
+  template:
+    metadata:
+      labels:
+        app: opensearch
+    spec:
+      containers:
+      - name: opensearch
+        image: opensearchproject/opensearch:latest
+        ports:
+        - containerPort: 9200
+        - containerPort: 9600
+        env:
+        - name: discovery.type
+          value: "single-node"
+        - name: DISABLE_SECURITY_PLUGIN
+          value: "true"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: opensearch-service
+spec:
+  selector:
+    app: opensearch
+  ports:
+  - name: http
+    port: 9200
+    targetPort: 9200
+    nodePort: 30920
+  - name: performance
+    port: 9600
+    targetPort: 9600
+    nodePort: 30960
+  type: NodePort

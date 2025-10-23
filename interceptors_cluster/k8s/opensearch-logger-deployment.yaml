@@ -1,0 +1,58 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: opensearch-logger
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: opensearch-logger
+  template:
+    metadata:
+      labels:
+        app: opensearch-logger
+    spec:
+      containers:
+      - name: opensearch-logger
+        image: opensearch-logger-interceptor:latest
+        imagePullPolicy: Never
+        command:
+        - node
+        - dist/src/opensearch_logger_cli.js
+        - $(IN_EXCHANGE)
+        - $(OUT_EXCHANGE)
+        env:
+        - name: AMQP_HOSTNAME
+          valueFrom:
+            configMapKeyRef:
+              name: opensearch-logger-config
+              key: AMQP_HOSTNAME
+        - name: AMQP_PORT
+          valueFrom:
+            configMapKeyRef:
+              name: opensearch-logger-config
+              key: AMQP_PORT
+        - name: AMQP_USERNAME
+          valueFrom:
+            configMapKeyRef:
+              name: opensearch-logger-config
+              key: AMQP_USERNAME
+        - name: AMQP_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              name: amqp-secret
+              key: AMQP_PASSWORD
+        - name: AMQP_USE_TLS
+          value: "true"
+        - name: IN_EXCHANGE
+          valueFrom:
+            configMapKeyRef:
+              name: opensearch-logger-config
+              key: IN_EXCHANGE
+        - name: OUT_EXCHANGE
+          valueFrom:
+            configMapKeyRef:
+              name: opensearch-logger-config
+              key: OUT_EXCHANGE
+        - name: OPENSEARCH_URL
+          value: "http://opensearch-service:9200"

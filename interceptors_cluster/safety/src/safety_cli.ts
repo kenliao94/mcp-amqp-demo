@@ -29,11 +29,11 @@ class SafetyInterceptor extends InterceptorBase {
             console.log(`Total calls by ${clientId}: ${this.toolCallsByClient.get(clientId)!.length}`);
         }
         
-        return MessageProcessStatus.SUCCEEDED_FORWARD;
+        return MessageProcessStatus.FORWARD;
     }
 
     async proccessMCPToClientMessage(message: any): Promise<MessageProcessStatus> {
-        return MessageProcessStatus.SUCCEEDED_FORWARD;
+        return MessageProcessStatus.FORWARD;
     }
 }
 

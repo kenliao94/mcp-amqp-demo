@@ -1,0 +1,21 @@
+{
+  "name": "mcp-interceptor-opensearch-logger",
+  "version": "1.0.0",
+  "main": "dist/opensearch_logger_cli.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "dependencies": {
+    "@opensearch-project/opensearch": "^2.5.0",
+    "@modelcontextprotocol/sdk": "^1.19.1",
+    "amqplib": "^0.10.9",
+    "mcp-amqp-transport": "file:/app",
+    "zod": "^3.25.76"
+  },
+  "devDependencies": {
+    "@types/amqplib": "^0.10.7",
+    "@types/node": "^20.0.0",
+    "ts-node": "^10.0.0",
+    "typescript": "^5.0.0"
+  }
+}

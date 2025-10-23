@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: opensearch-logger-config
+data:
+  AMQP_HOSTNAME: "b-9560b8e1-3d33-4d91-9488-a3dc4a61dfe7.mq.us-east-1.amazonaws.com"
+  AMQP_PORT: "5671"
+  AMQP_USERNAME: "admin"
+  AMQP_USE_TLS: "true"
+  IN_EXCHANGE: "client-cluster-exchange"
+  OUT_EXCHANGE: "safety-interceptor-exchange"
+---
+apiVersion: v1
+kind: Secret
+metadata:
+  name: amqp-secret
+type: Opaque
+stringData:
+  AMQP_PASSWORD: "admintestrabbit"
