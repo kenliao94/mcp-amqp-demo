@@ -35,9 +35,7 @@ spec:
   - name: http
     port: 9200
     targetPort: 9200
-    nodePort: 30920
   - name: performance
     port: 9600
     targetPort: 9600
-    nodePort: 30960
-  type: NodePort
+  type: ClusterIP
