@@ -1,3 +1,14 @@
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: opensearch-dashboards-pvc
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -22,6 +33,13 @@ spec:
           value: "http://opensearch-service:9200"
         - name: DISABLE_SECURITY_DASHBOARDS_PLUGIN
           value: "true"
+        volumeMounts:
+        - name: dashboards-data
+          mountPath: /usr/share/opensearch-dashboards/data
+      volumes:
+      - name: dashboards-data
+        persistentVolumeClaim:
+          claimName: opensearch-dashboards-pvc
 ---
 apiVersion: v1
 kind: Service
