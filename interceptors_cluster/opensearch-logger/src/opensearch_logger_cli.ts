@@ -9,6 +9,7 @@ interface LogEntry {
     messageId?: string | number;
     method?: string;
     headers?: any;
+    tokenCount?: number;
 }
 
 class OpenSearchLoggerInterceptor extends InterceptorBase {
@@ -47,13 +48,17 @@ class OpenSearchLoggerInterceptor extends InterceptorBase {
 
     private async logMessage(message: any, direction: 'client-to-mcp' | 'mcp-to-client', headers?: any): Promise<void> {
         try {
+            const messageStr = JSON.stringify(message);
+            const tokenCount = Math.ceil(messageStr.length / 4);
+            
             const logEntry: LogEntry = {
                 timestamp: new Date().toISOString(),
                 direction,
                 message,
                 messageId: message.id,
                 method: message.method,
-                headers
+                headers,
+                tokenCount
             };
 
             await this.client.index({
