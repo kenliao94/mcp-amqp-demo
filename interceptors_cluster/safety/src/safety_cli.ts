@@ -10,7 +10,7 @@ interface ToolCall {
 class SafetyInterceptor extends InterceptorBase {
     private toolCallsByClient: Map<string, ToolCall[]> = new Map();
 
-    async proccessClientToMCPMessage(message: any): Promise<MessageProcessStatus> {
+    async proccessClientToMCPMessage(message: any, headers?: any): Promise<MessageProcessStatus> {
         if (message.method === 'tools/call') {
             const clientId = message.params?.clientId || 'unknown';
             const toolName = message.params?.name;
@@ -32,7 +32,7 @@ class SafetyInterceptor extends InterceptorBase {
         return MessageProcessStatus.FORWARD;
     }
 
-    async proccessMCPToClientMessage(message: any): Promise<MessageProcessStatus> {
+    async proccessMCPToClientMessage(message: any, headers?: any): Promise<MessageProcessStatus> {
         return MessageProcessStatus.FORWARD;
     }
 }

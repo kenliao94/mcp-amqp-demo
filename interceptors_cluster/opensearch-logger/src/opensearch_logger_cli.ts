@@ -8,6 +8,7 @@ interface LogEntry {
     message: any;
     messageId?: string | number;
     method?: string;
+    headers?: any;
 }
 
 class OpenSearchLoggerInterceptor extends InterceptorBase {
@@ -26,26 +27,33 @@ class OpenSearchLoggerInterceptor extends InterceptorBase {
         });
     }
 
-    async proccessClientToMCPMessage(message: any): Promise<MessageProcessStatus> {
-        await this.logMessage(message, 'client-to-mcp');
+    async proccessClientToMCPMessage(message: any, headers?: any): Promise<MessageProcessStatus> {
+        await this.logMessage(message, 'client-to-mcp', headers);
         console.log('\x1b[36m' + `Client -> MCP: ${JSON.stringify(message)}` + '\x1b[0m');
+        if (headers) {
+            console.log('\x1b[90m' + `Headers: ${JSON.stringify(headers)}` + '\x1b[0m')
+        } else {
+            console.log('\x1b[90m' + "Headers: empty" + '\x1b[0m')
+        }
         return MessageProcessStatus.DROP;
     }
 
-    async proccessMCPToClientMessage(message: any): Promise<MessageProcessStatus> {
-        await this.logMessage(message, 'mcp-to-client');
+    async proccessMCPToClientMessage(message: any, headers?: any): Promise<MessageProcessStatus> {
+        await this.logMessage(message, 'mcp-to-client', headers);
         console.log('\x1b[33m' + `MCP -> Client: ${JSON.stringify(message)}` + '\x1b[0m');
+        if (headers) console.log('\x1b[90m' + `Headers: ${JSON.stringify(headers)}` + '\x1b[0m');
         return MessageProcessStatus.DROP;
     }
 
-    private async logMessage(message: any, direction: 'client-to-mcp' | 'mcp-to-client'): Promise<void> {
+    private async logMessage(message: any, direction: 'client-to-mcp' | 'mcp-to-client', headers?: any): Promise<void> {
         try {
             const logEntry: LogEntry = {
                 timestamp: new Date().toISOString(),
                 direction,
                 message,
                 messageId: message.id,
-                method: message.method
+                method: message.method,
+                headers
             };
 
             await this.client.index({
