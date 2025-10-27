@@ -1,8 +1,3 @@
-## TODO
-1. Find a list of MCP servers that are in TS
-2. Spin up a k8s cluster for the MCP servers
-
-
 ## The Demo
 - 3 MCP servers RabbitMQ: 
 - Interceptor: 
