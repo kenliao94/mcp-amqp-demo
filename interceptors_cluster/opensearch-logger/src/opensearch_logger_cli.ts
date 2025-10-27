@@ -28,7 +28,7 @@ class OpenSearchLoggerInterceptor extends InterceptorBase {
         });
     }
 
-    async proccessClientToMCPMessage(message: any, headers?: any): Promise<MessageProcessStatus> {
+    async proccessClientToMCPMessage(message: any, headers?: any): Promise<[MessageProcessStatus, any?]> {
         await this.logMessage(message, 'client-to-mcp', headers);
         console.log('\x1b[36m' + `Client -> MCP: ${JSON.stringify(message)}` + '\x1b[0m');
         if (headers) {
@@ -36,14 +36,14 @@ class OpenSearchLoggerInterceptor extends InterceptorBase {
         } else {
             console.log('\x1b[90m' + "Headers: empty" + '\x1b[0m')
         }
-        return MessageProcessStatus.DROP;
+        return [MessageProcessStatus.DROP];
     }
 
-    async proccessMCPToClientMessage(message: any, headers?: any): Promise<MessageProcessStatus> {
+    async proccessMCPToClientMessage(message: any, headers?: any): Promise<[MessageProcessStatus, any?]> {
         await this.logMessage(message, 'mcp-to-client', headers);
         console.log('\x1b[33m' + `MCP -> Client: ${JSON.stringify(message)}` + '\x1b[0m');
         if (headers) console.log('\x1b[90m' + `Headers: ${JSON.stringify(headers)}` + '\x1b[0m');
-        return MessageProcessStatus.DROP;
+        return [MessageProcessStatus.DROP];
     }
 
     private async logMessage(message: any, direction: 'client-to-mcp' | 'mcp-to-client', headers?: any): Promise<void> {

@@ -48,18 +48,18 @@ class MonitorMessageInterceptor extends InterceptorBase {
         }
     }
 
-    async proccessClientToMCPMessage(message: any, headers?: any): Promise<MessageProcessStatus> {
+    async proccessClientToMCPMessage(message: any, headers?: any): Promise<[MessageProcessStatus, any?]> {
         const logMessage = `Client -> MCP: ${JSON.stringify(message)}`;
         console.log('\x1b[36m' + logMessage + '\x1b[0m');
         await this.logToCloudWatch(logMessage);
-        return MessageProcessStatus.FORWARD;
+        return [MessageProcessStatus.FORWARD];
     }
 
-    async proccessMCPToClientMessage(message: any, headers?: any): Promise<MessageProcessStatus> {
+    async proccessMCPToClientMessage(message: any, headers?: any): Promise<[MessageProcessStatus, any?]> {
         const logMessage = `MCP -> Client: ${JSON.stringify(message)}`;
         console.log('\x1b[33m' + logMessage + '\x1b[0m');
         await this.logToCloudWatch(logMessage);
-        return MessageProcessStatus.FORWARD;
+        return [MessageProcessStatus.FORWARD];
     }
 }
 
