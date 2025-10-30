@@ -9,3 +9,5 @@ data:
   AMQP_USE_TLS: "true"
   IN_EXCHANGE: "safety-interceptor-exchange"
   OUT_EXCHANGE: "mcp-cluster-exchange"
+  OPENSEARCH_ENDPOINT: "http://opensearch-service:9200"
+  OPENSEARCH_INDEX: "mcp-security"

@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 import { InterceptorBase, MessageProcessStatus } from 'mcp-amqp-transport';
+import { Client } from '@opensearch-project/opensearch';
 
 interface ToolCall {
     toolName: string;
@@ -9,6 +10,20 @@ interface ToolCall {
 
 class SafetyInterceptor extends InterceptorBase {
     private toolCallsByClient: Map<string, ToolCall[]> = new Map();
+    private client: Client;
+    private indexName: string;
+
+    constructor(config: any) {
+        super(config);
+        console.log("Starting Safety interceptor with OpenSearch");
+        
+        this.indexName = process.env.OPENSEARCH_INDEX || 'mcp-security';
+        const opensearchEndpoint = process.env.OPENSEARCH_ENDPOINT || 'http://opensearch-service:9200';
+
+        this.client = new Client({
+            node: opensearchEndpoint,
+        });
+    }
 
     async proccessClientToMCPMessage(message: any, headers?: any): Promise<[MessageProcessStatus, any?]> {
         if (message.method === 'tools/call') {
@@ -29,11 +44,31 @@ class SafetyInterceptor extends InterceptorBase {
             console.log(`Total calls by ${clientId}: ${this.toolCallsByClient.get(clientId)!.length}`);
         }
         
+        await this.logToOpenSearch(message, 'client-to-mcp', headers);
         return [MessageProcessStatus.FORWARD];
     }
 
     async proccessMCPToClientMessage(message: any, headers?: any): Promise<[MessageProcessStatus, any?]> {
+        await this.logToOpenSearch(message, 'mcp-to-client', headers);
         return [MessageProcessStatus.FORWARD];
+    }
+
+    private async logToOpenSearch(message: any, direction: 'client-to-mcp' | 'mcp-to-client', headers?: any): Promise<void> {
+        try {
+            await this.client.index({
+                index: this.indexName,
+                body: {
+                    timestamp: new Date().toISOString(),
+                    direction,
+                    message,
+                    messageId: message.id,
+                    method: message.method,
+                    headers
+                }
+            });
+        } catch (error) {
+            console.error('Failed to log to OpenSearch:', error);
+        }
     }
 }
 

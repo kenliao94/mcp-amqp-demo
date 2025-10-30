@@ -54,3 +54,13 @@ spec:
             configMapKeyRef:
               name: safety-interceptor-config
               key: OUT_EXCHANGE
+        - name: OPENSEARCH_ENDPOINT
+          valueFrom:
+            configMapKeyRef:
+              name: safety-interceptor-config
+              key: OPENSEARCH_ENDPOINT
+        - name: OPENSEARCH_INDEX
+          valueFrom:
+            configMapKeyRef:
+              name: safety-interceptor-config
+              key: OPENSEARCH_INDEX

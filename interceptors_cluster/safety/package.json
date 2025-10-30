@@ -6,6 +6,7 @@
     "build": "tsc"
   },
   "dependencies": {
+    "@opensearch-project/opensearch": "^2.5.0",
     "@modelcontextprotocol/sdk": "^1.19.1",
     "amqplib": "^0.10.9",
     "express": "^5.1.0",
