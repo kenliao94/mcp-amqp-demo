@@ -26,12 +26,38 @@ class SafetyInterceptor extends InterceptorBase {
     }
 
     async proccessClientToMCPMessage(message: any, headers?: any): Promise<[MessageProcessStatus, any?]> {
+        const callCountLimit = 20;
         if (message.method === 'tools/call') {
             const clientId = message.params?.clientId || 'unknown';
             const toolName = message.params?.name;
             
             if (!this.toolCallsByClient.has(clientId)) {
                 this.toolCallsByClient.set(clientId, []);
+            }
+            
+            const callCount = this.toolCallsByClient.get(clientId)!.length;
+            console.log(`current call count for clientId=${clientId} is ${callCount}`)
+            
+            if (callCount >= callCountLimit) {
+                console.log(`[${clientId}] REJECTED: Exceeded tool call limit (${callCount}/${callCountLimit})`);
+                
+                await this.logSecurityEvent('rate_limit_exceeded', {
+                    clientId,
+                    toolName,
+                    callCount,
+                    limit: callCountLimit
+                });
+                
+                const errorResponse = {
+                    jsonrpc: '2.0',
+                    id: message.id,
+                    error: {
+                        code: -32000,
+                        message: 'Rate limit exceeded: Maximum 20 tool calls per client'
+                    }
+                };
+                
+                return [MessageProcessStatus.REJECT, errorResponse];
             }
             
             this.toolCallsByClient.get(clientId)!.push({
@@ -41,7 +67,7 @@ class SafetyInterceptor extends InterceptorBase {
             });
             
             console.log(`[${clientId}] Tool called: ${toolName}`);
-            console.log(`Total calls by ${clientId}: ${this.toolCallsByClient.get(clientId)!.length}`);
+            console.log(`Total calls by ${clientId}: ${callCount + 1}/20`);
         }
         
         await this.logToOpenSearch(message, 'client-to-mcp', headers);
@@ -50,7 +76,7 @@ class SafetyInterceptor extends InterceptorBase {
 
     async proccessMCPToClientMessage(message: any, headers?: any): Promise<[MessageProcessStatus, any?]> {
         // Check if this is a read_paper response
-        const word_limit = 300;
+        const word_limit = 600;
         console.log(`make sure the return content will not exhaust context window with word_limit: ${word_limit}`)
         if (message.result?.content) {
             const content = Array.isArray(message.result.content) 
