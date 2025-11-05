@@ -4,9 +4,9 @@ Production MCP architecture with RabbitMQ broker and Kubernetes interceptor pipe
 
 ## Architecture
 
-```
-Agent → client-cluster-exchange → Interceptors → server-cluster-exchange → MCP Servers
-```
+<img width="765" height="540" alt="image" src="https://github.com/user-attachments/assets/e3616bb4-b6c4-4bcf-baca-55a22c20e7e1" />
+
+
 
 **Interceptor Pipeline:**
 1. **Monitor** → CloudWatch logging
