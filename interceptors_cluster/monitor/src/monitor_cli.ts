@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-import { InterceptorBase, MessageProcessStatus } from 'mcp-amqp-transport';
+import { InterceptorBase, MessageProcessStatus } from '@aws/mcp-amqp-transport';
 import { CloudWatchLogsClient, PutLogEventsCommand, CreateLogStreamCommand } from '@aws-sdk/client-cloudwatch-logs';
 
 class MonitorMessageInterceptor extends InterceptorBase {

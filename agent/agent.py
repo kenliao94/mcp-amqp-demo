@@ -1,26 +1,26 @@
 """Strands agent that uses RabbitMQ MCP server via stdio."""
 
+import os
 from mcp import StdioServerParameters, stdio_client
 from strands import Agent
 from strands.tools.mcp import MCPClient
+
+hostname = os.getenv("AMQP_HOSTNAME")
+port = os.getenv("AMQP_PORT")
+username = os.getenv("AMQP_USERNAME")
+password = os.getenv("AMQP_PASSWORD")
 
 firecrawl_mcp_client = MCPClient(
     lambda: stdio_client(
         StdioServerParameters(
             command="mcp-client-amqp-adaptor", 
-            args=["--hostname",
-                  "b-9560b8e1-3d33-4d91-9488-a3dc4a61dfe7.mq.us-east-1.amazonaws.com",
-                  "--port",
-                  "5671",
-                  "--username",
-                  "admin",
-                  "--password",
-                  "admintestrabbit",
+            args=["--hostname", hostname,
+                  "--port", port,
+                  "--username", username,
+                  "--password", password,
                   "--useTLS",
-                  "--serverName",
-                  "firecrawlMCP",
-                  "--exchangeName",
-                  "client-cluster-exchange"]
+                  "--serverName", "firecrawlMCP",
+                  "--exchangeName", "client-cluster-exchange"]
         )
     )
 )
@@ -29,19 +29,13 @@ arxiv_mcp_client = MCPClient(
     lambda: stdio_client(
         StdioServerParameters(
             command="mcp-client-amqp-adaptor", 
-            args=["--hostname",
-                  "b-9560b8e1-3d33-4d91-9488-a3dc4a61dfe7.mq.us-east-1.amazonaws.com",
-                  "--port",
-                  "5671",
-                  "--username",
-                  "admin",
-                  "--password",
-                  "admintestrabbit",
+            args=["--hostname", hostname,
+                  "--port", port,
+                  "--username", username,
+                  "--password", password,
                   "--useTLS",
-                  "--serverName",
-                  "ArxivMCP",
-                  "--exchangeName",
-                  "client-cluster-exchange"]
+                  "--serverName", "ArxivMCP",
+                  "--exchangeName", "client-cluster-exchange"]
         )
     )
 )

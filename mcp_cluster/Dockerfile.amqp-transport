@@ -2,11 +2,7 @@ FROM node:20-slim
 
 WORKDIR /app
 
-COPY amazon_mq_github/mcp-amqp-transport/package*.json ./
-RUN npm install
-
-COPY amazon_mq_github/mcp-amqp-transport/ ./
-RUN npm run build && npm link
+RUN npm install -g @aws/mcp-amqp-transport
 
 RUN apt-get update && apt-get install -y python3 python3-pip && \
     pip3 install uv --break-system-packages

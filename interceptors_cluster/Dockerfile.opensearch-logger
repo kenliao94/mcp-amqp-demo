@@ -2,19 +2,8 @@ FROM node:20-slim
 
 WORKDIR /app
 
-COPY amazon_mq_github/mcp-amqp-transport/package*.json ./
+COPY opensearch-logger/package*.json ./
 RUN npm install
 
-COPY amazon_mq_github/mcp-amqp-transport/ ./
-RUN npm run build && npm link
-
-ENV PATH="/root/.local/bin:${PATH}"
-
-
-WORKDIR /interceptor
-
-COPY mcp_cluster_demo/interceptors_cluster/opensearch-logger/package*.json ./
-RUN npm install
-
-COPY mcp_cluster_demo/interceptors_cluster/opensearch-logger/ ./
+COPY opensearch-logger/ ./
 RUN npm run build
