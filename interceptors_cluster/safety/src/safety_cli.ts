@@ -28,7 +28,7 @@ class SafetyInterceptor extends InterceptorBase {
     async proccessClientToMCPMessage(message: any, headers?: any): Promise<[MessageProcessStatus, any?]> {
         const callCountLimit = 20;
         if (message.method === 'tools/call') {
-            const clientId = message.params?.clientId || 'unknown';
+            const clientId = headers?.clientId || 'unknown';
             const toolName = message.params?.name;
             
             if (!this.toolCallsByClient.has(clientId)) {
