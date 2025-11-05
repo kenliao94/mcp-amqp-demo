@@ -9,11 +9,3 @@ data:
   AMQP_USE_TLS: "true"
   IN_EXCHANGE: "client-cluster-exchange"
   OUT_EXCHANGE: "safety-interceptor-exchange"
----
-apiVersion: v1
-kind: Secret
-metadata:
-  name: amqp-secret
-type: Opaque
-stringData:
-  AMQP_PASSWORD: "admintestrabbit"
