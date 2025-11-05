@@ -1,6 +1,6 @@
 # MCP Cluster Demo
 
-Production MCP architecture with RabbitMQ broker and Kubernetes interceptor pipeline.
+AI agentic system for performing academic research using mcp-amqp-transport framework
 
 ## Architecture
 
@@ -9,9 +9,8 @@ Production MCP architecture with RabbitMQ broker and Kubernetes interceptor pipe
 
 
 **Interceptor Pipeline:**
-1. **Monitor** → CloudWatch logging
-2. **OpenSearch Logger** → Message indexing
-3. **Safety** → Rate limiting + content filtering
+1. **Analytics** → Logging the messages to Opensearch for analytics
+2. **Safety** → Rate limiting + content filtering
 
 **MCP Servers:**
 - Firecrawl (web scraping)
