@@ -9,7 +9,7 @@
     "@opensearch-project/opensearch": "^2.5.0",
     "@modelcontextprotocol/sdk": "^1.19.1",
     "amqplib": "^0.10.9",
-    "mcp-amqp-transport": "file:/app",
+    "@aws/mcp-amqp-transport": "^1.0.0",
     "zod": "^3.25.76"
   },
   "devDependencies": {
