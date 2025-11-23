@@ -19,9 +19,30 @@ AI agentic system for performing academic research using mcp-amqp-transport fram
 ## Quick Start
 
 ```bash
+# Set up Amazon MQ for RabbitMQ broker
+# 1. Go to AWS Console → Amazon MQ → Create broker
+# 2. Select RabbitMQ engine
+# 3. Choose deployment mode (Single-instance for dev, Cluster for production)
+# 4. Configure broker (name, instance type, username/password)
+# 5. Set network access (Public)
+# 6. Note the broker endpoint and credentials
+
+# Or you can install RabbitMQ locally https://www.rabbitmq.com/docs/download
+
+# Install the library for running the adaptor locally
+npm install -g @aws/mcp-amqp-transport
+
+# Configure AWS CLI for Bedrock access
+aws configure
+# Ensure your IAM user/role has the right permission
+
 # Start Kubernetes
 minikube start
 eval $(minikube docker-env)
+
+# Create required secrets
+kubectl create secret generic amqp-secret --from-literal=AMQP_PASSWORD=your_password
+kubectl create secret generic firecrawl-secret --from-literal=FIRECRAWL_API_KEY=your_api_key
 
 # Build and deploy MCP servers
 cd mcp_cluster
@@ -36,8 +57,12 @@ docker build -f Dockerfile.opensearch-logger -t opensearch-logger:latest .
 kubectl apply -f k8s_storage/
 kubectl apply -f k8s/
 
-# Run agent
+# Run agent locally
 cd ../agent
+export AMQP_HOSTNAME=<your_hostname, ex. b-9560b8e1-3d33-4d91-9488-a3dc4a61dfe7.mq.us-east-1.amazonaws.com>
+export AMQP_PORT=<the AMQP or AMQPS port, ex. 5671>
+export AMQP_USERNAME=<your_username>
+export AMQP_PASSWORD=<your_password>
 uv sync
 uv run agent.py
 ```
